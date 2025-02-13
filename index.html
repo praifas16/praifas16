@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>บอกรักแฟน</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #ffe6e6;
+        padding: 50px;
+      }
+      .envelope {
+        width: 150px;
+        height: 100px;
+        background: red;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+      .envelope:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 75px solid transparent;
+        border-right: 75px solid transparent;
+        border-bottom: 50px solid white;
+      }
+      .message {
+        font-size: 20px;
+        color: red;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>💌 ถึงที่รัก 💌</h2>
+    <div class="envelope"></div>
+    <p class="message">ฉันรักเธอมากนะ ❤️</p>
+  </body>
+</html>
