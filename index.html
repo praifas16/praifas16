@@ -3,43 +3,189 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>บอกรักแฟน</title>
+    <title>กำลังจะบอกรักแล้วนะ</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap");
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Kanit", sans-serif;
         text-align: center;
-        background-color: #ffe6e6;
+        background-color: #ecbac3;
+        color: white;
         padding: 50px;
-      }
-      .envelope {
-        width: 150px;
-        height: 100px;
-        background: red;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
         position: relative;
-        display: inline-block;
-        margin-bottom: 20px;
       }
-      .envelope:before {
-        content: "";
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        max-width: 400px;
+        background: white;
+        border-radius: 50%;
+        padding: 30px 20px;
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: opacity 1s ease-in-out;
+      }
+
+      .loading-bar {
+        width: 100%;
+        height: 20px;
+        background: #555;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 15px;
+        position: relative;
+      }
+
+      .progress {
+        height: 100%;
+        width: 0;
+        background: #e57397;
+        transition: width 2s ease-in-out;
+      }
+
+      .heart-button {
+        margin-top: 15px;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        background: url("img/heart.png") no-repeat center center;
+        background-size: contain;
+        border: none;
+        outline: none;
+      }
+
+      .falling-hearts {
         position: absolute;
         top: 0;
         left: 0;
-        width: 0;
-        height: 0;
-        border-left: 75px solid transparent;
-        border-right: 75px solid transparent;
-        border-bottom: 50px solid white;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
       }
-      .message {
-        font-size: 20px;
-        color: red;
-        margin-top: 20px;
+
+      .heart {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background: url("img/heart.png") no-repeat center center;
+        background-size: contain;
+        animation: fall linear infinite;
+        opacity: 1;
+      }
+
+      h1 {
+        color: #e57397;
+        margin-bottom: 5px;
+        font-size: 1.5em;
+        max-width: 90%;
+        word-wrap: break-word;
+      }
+
+      p {
+        color: #e57397;
+        margin-top: 0;
+        font-size: 1.2em;
+      }
+
+      /* เอฟเฟกต์แถบสีเลื่อนลง */
+      .transition-screen {
+        position: absolute;
+        top: -100vh;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: #ecbac3;
+        transition: top 1.5s ease-in-out;
+        z-index: 20;
+      }
+
+      @keyframes fall {
+        from {
+          transform: translateY(-10vh) scale(1);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(100vh) scale(1.5);
+          opacity: 0;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        body {
+          padding: 20px;
+        }
+        .container {
+          width: 90%;
+          padding: 20px;
+        }
       }
     </style>
   </head>
   <body>
-    <h2>💌 ถึงที่รัก 💌</h2>
-    <div class="envelope"></div>
-    <p class="message">ฉันรักเธอมากนะ ❤️</p>
+    <div class="falling-hearts" id="fallingHearts"></div>
+    <div class="container" id="container">
+      <h1>happy valentine's day</h1>
+      <div class="loading-bar">
+        <div class="progress" id="progressBar"></div>
+      </div>
+      <button class="heart-button" onclick="startLoading()"></button>
+    </div>
+
+    <!-- แถบสีที่จะเลื่อนลงมา -->
+    <div class="transition-screen" id="transitionScreen"></div>
+
+    <script>
+      function createHeart() {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+        heart.style.width = Math.random() * 30 + 30 + "px";
+        heart.style.height = heart.style.width;
+        document.getElementById("fallingHearts").appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }
+      setInterval(createHeart, 200);
+
+      function startLoading() {
+        let progressBar = document.getElementById("progressBar");
+        let transitionScreen = document.getElementById("transitionScreen");
+        let container = document.getElementById("container");
+
+        let progress = 0;
+        let interval = setInterval(() => {
+          progress += 1;
+          progressBar.style.width = progress + "%";
+
+          if (progress >= 100) {
+            clearInterval(interval);
+
+            // ซ่อน container อย่างสมูท
+            container.style.opacity = "0";
+
+            // รอให้ container หายไป แล้วเลื่อนแถบสีลงมา
+            setTimeout(() => {
+              transitionScreen.style.top = "0";
+
+              setTimeout(() => {
+                window.location.href = "one.html";
+              }, 1500);
+            }, 1000); // รอให้ fade-out เสร็จก่อน
+          }
+        }, 30);
+      }
+    </script>
   </body>
 </html>
