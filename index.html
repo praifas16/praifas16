@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>กำลังจะบอกรักแล้วนะ</title>
+    <title>Our Love Journey</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap");
 
@@ -11,181 +11,232 @@
         font-family: "Kanit", sans-serif;
         text-align: center;
         background-color: #ecbac3;
-        color: white;
-        padding: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
+        color: #d62828;
         margin: 0;
-        overflow: hidden;
-        position: relative;
+        padding: 0;
+        overflow-x: hidden;
       }
 
-      .container {
+      .intro {
+        height: 100vh;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 90%;
-        max-width: 400px;
-        background: white;
+        background: url("img/heart.png") no-repeat center center;
+        background-size: contain;
+      }
+
+      .event {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 60px 0;
+        opacity: 0;
+        transform: translateY(70px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+      }
+
+      .event.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .event-heart {
+        width: 60px;
+        height: 60px;
+        background-color: #d62828;
         border-radius: 50%;
-        padding: 30px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
         position: relative;
-        z-index: 10;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        transition: opacity 1s ease-in-out;
-      }
-
-      .loading-bar {
-        width: 100%;
-        height: 20px;
-        background: #555;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-top: 15px;
-        position: relative;
-      }
-
-      .progress {
-        height: 100%;
-        width: 0;
-        background: #e57397;
-        transition: width 2s ease-in-out;
-      }
-
-      .heart-button {
-        margin-top: 15px;
+        margin-bottom: 20px;
         cursor: pointer;
-        width: 50px;
-        height: 50px;
-        background: url("img/heart.png") no-repeat center center;
-        background-size: contain;
-        border: none;
-        outline: none;
       }
 
-      .falling-hearts {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        pointer-events: none;
+      .event-heart:hover {
+        background-color: #851414;
       }
 
-      .heart {
+      .event-heart::after {
+        content: "";
         position: absolute;
-        width: 40px;
-        height: 40px;
-        background: url("img/heart.png") no-repeat center center;
-        background-size: contain;
-        animation: fall linear infinite;
+        width: 4px;
+        height: 100px;
+        background-color: #d62828;
+        top: -90px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        text-align: center;
+        width: 300px;
+        z-index: 1000;
+      }
+
+      .popup.show {
+        transform: translate(-50%, -50%) scale(1);
         opacity: 1;
       }
 
-      h1 {
-        color: #e57397;
-        margin-bottom: 6px;
-        font-size: 1.5em;
-        max-width: 90%;
-        word-wrap: break-word;
+      .popup-close {
+        margin-top: 10px;
+        background: #d62828;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
       }
-
-      p {
-        color: #e57397;
-        margin-top: 0;
-        font-size: 1.2em;
-      }
-
-      /* เอฟเฟกต์แถบสีเลื่อนลง */
-      .transition-screen {
-        position: absolute;
-        top: -100vh;
-        left: 0;
-        width: 100%;
-        height: 100vh;
+      .timeline-container {
+        padding: 50px 0;
         background-color: #ecbac3;
-        transition: top 1.5s ease-in-out;
-        z-index: 20;
       }
 
-      @keyframes fall {
-        from {
-          transform: translateY(-10vh) scale(1);
-          opacity: 1;
-        }
-        to {
-          transform: translateY(100vh) scale(1.5);
-          opacity: 0;
-        }
-      }
-
-      @media screen and (max-width: 600px) {
-        body {
-          padding: 20px;
-        }
-        .container {
-          width: 90%;
-          padding: 20px;
-        }
+      .timeline {
+        position: relative;
+        width: 4px;
+        background-color: #d62828;
+        margin: 0 auto;
+        height: 100%;
       }
     </style>
   </head>
   <body>
-    <div class="falling-hearts" id="fallingHearts"></div>
-    <div class="container" id="container">
-      <h1>happy valentine's day</h1>
-      <div class="loading-bar">
-        <div class="progress" id="progressBar"></div>
-      </div>
-      <button class="heart-button" onclick="startLoading()"></button>
+    <div class="intro">
+      <h1></h1>
     </div>
 
-    <!-- แถบสีที่จะเลื่อนลงมา -->
-    <div class="transition-screen" id="transitionScreen"></div>
+    <div class="timeline-container">
+      <div class="timeline"></div>
+
+      <div class="event" data-year="2017">
+        <div
+          class="event-heart"
+          onclick="showPopup('2017', 'ขอบคุณที่วันนั้นเลือกจะรักกัน ทั้งที่ไม่รู้เลยว่าวันข้างหน้าจะเป็นยังไง ขอบคุณที่คอยอยู่ข้างๆเสมอ ไม่ว่าเจอเรื่องอะไรก็ไม่เคยทิ้งไปไหนเลย ปีนี้เค้าคลั่งด่าเธอสุดๆ ด่าเก่งบ่นเก่ง แต่ก็รักตลอด 55555❤️')"
+        >
+          2017
+        </div>
+      </div>
+
+      <div class="event" data-year="2018">
+        <div
+          class="event-heart"
+          onclick="showPopup('2018', 'ปีนี้เป็นปีที่เราทะเลาะกันฉ่ำ เปลี่ยนที่ เปลี่ยนสังคม เปลี่ยนเพื่อน เค้าเริ่มกินเหล้า เริ่มใส่ขาสั้น แต่สุดท้ายก็ผ่านมันมาได้ ถึงจะทะเลาะกันหนักแค่ไหน เธอก็ไม่เคยปล่อยเค้าไปไหน ไม่เคยทิ้งเค้าไปไหน พยายามปรับหลายๆอย่างเพื่อให้เราไปต่อไป ขอบคุณมากนะงับบ ✈️')"
+        >
+          2018
+        </div>
+      </div>
+
+      <div class="event" data-year="2019">
+        <div
+          class="event-heart"
+          onclick="showPopup('2019', 'ปีนี้หนักเลย ตอนที่เค้าเจอปัญหาเรื่องกีฬาสี เค้านอนกอดเธอร้องไห้ จำได้ดีเลย ตอนนั้นเค้าผิด แต่เธอไม่ด่าเค้าสั้กคำ แถมโอ๋ด้วย ไม่ทิ้งให้อยู่คนเดียว น่ารักขนาดนั้นจะไม่ให้รักเธอหัวทิ่มได้ยังไง 💕')"
+        >
+          2019
+        </div>
+      </div>
+
+      <div class="event" data-year="2020">
+        <div
+          class="event-heart"
+          onclick="showPopup('2020', 'ปีนี้เป็นปีที่เค้าต้องตัดสินใจ เธอก็ต้องตัดสินใจ เรื่องเรียนต่อ เค้าก็ลังเลว่าจไปจาก พล. ดีมั้ย เธอก็ต้องดื้อกับพ่อเรื่องที่ไม่ไปภูเก็ต ขอบคุณที่ดื้อกับพ่อวันนั้น แล้วก็ขอบคุณตัวเค้าด้วย ที่ตัดสินใจเรียนที่ มน. อย่างน้อยๆ เราก็ได้ใช้เวลาช่วงมหาลัยด้วยกันแบบเต็มที่ 55555 หลงเธอสุดๆ รักกันสุดๆเลย 🎯')"
+        >
+          2020
+        </div>
+      </div>
+
+      <div class="event" data-year="2021">
+        <div
+          class="event-heart"
+          onclick="showPopup('2021', 'ปีนี้เราอยู่ด้วยกันช่วงเทอมสอง ที่หอเขื่อนขัน มีความสุขมาก มากที่สุดเลย ทุกอย่างดีไปหมด ถึงจะเรียนยากแค่ไหน แต่รู้สึกปลอดภัย รู้สึกว่าทุกอย่างมันจะผ่านไปได้  📸')"
+        >
+          2021
+        </div>
+      </div>
+
+      <div class="event" data-year="2022">
+        <div
+          class="event-heart"
+          onclick="showPopup('2022', 'ปีนี้น่าจะเป็นปีที่เค้ารู้สึกว่ามันคือปีที่ดีที่สุด ของระยะเวลาทั้งหมดที่เราคบกัน ช่วงนี้เค้าหลงเธอสุดๆเลย อยากให้เธออยู่กับเค้าตลอด แบบว่าโลกเป็นสีชมพู อยากให้เวลาหยุดอยู่ที่ปีนั้น ไม่ต้องผ่านไป 55555  💪')"
+        >
+          2022
+        </div>
+      </div>
+
+      <div class="event" data-year="2023">
+        <div
+          class="event-heart"
+          onclick="showPopup('2023', 'ปีนี้แอบไม่ค่อยดี เพราะเธอเริ่มกินเหล้าบ่อยกว่าเค้า 5555 เสาร์อาทิตย์ไม่ได้อยู่ด้วยกัน งานเค้าเริ่มเยอะ เริ่มเหนื่อยกับอะไรหลายๆ รวมถึงเธอด้วยที่เหนื่อยกับเค้า 55555 ❤️')"
+        >
+          2023
+        </div>
+      </div>
+
+      <div class="event" data-year="2024">
+        <div
+          class="event-heart"
+          onclick="showPopup('2024', 'ปีนี้ไม่ต้องพูดถึง เหมือนเจอพายุ เค้าเกือบตายเลย แต่เพราะรักเธอมาก เลยยังอยู่ตรงนี้ อยู่ข้างๆเธอไม่หายไปไหน  💍')"
+        >
+          2024
+        </div>
+      </div>
+
+      <div class="event" data-year="2025">
+        <div
+          class="event-heart"
+          onclick="showPopup('2025', 'ส่วนตอนนี้ ปีปัจจุบัน ขอให้ทั้งเธอและเค้ารักกันไปนานๆ นานมากๆๆๆๆ เท่าที่จะนานได้ สำหรับเค้าแล้ว เธอยังป็นคนที่น่ารัก คนที่เค้ารักและพร้อมจะอยู่ข้างๆเสมอ ไม่ว่าเธอจะเจอเรื่องหนักอะไร ปัญหาหนักแค่ไหน เธอจะยังมีเค้าอยู่ข้างๆเสมอแน่นอน เค้าจะอยู่คอยให้กำลังใจเธอเสมอ จะรักเธอไปเรื่อยๆ ถึงจะยังชวนทะเลาะ หรือบางครั้งพูดอะไรที่มันไม่ดีขึ้นมา แต่ในใจเค้าไม่เคยคิดจะทิ้งเธอไปไหนเลยนะ เพราะงั้น เค้าขอให้เธออยู่ข้างเค้า แบบที่เค้าอยู่ข้างเธอ แบบที่เค้าคแยรักคอยห่วงใยเธอได้มั้ย....?  💍')"
+        >
+          2025
+        </div>
+      </div>
+    </div>
+
+    <div class="popup" id="popup">
+      <h2 id="popup-title"></h2>
+      <p id="popup-text"></p>
+      <button class="popup-close" onclick="closePopup()">Close</button>
+    </div>
 
     <script>
-      function createHeart() {
-        let heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = Math.random() * 2 + 3 + "s";
-        heart.style.width = Math.random() * 30 + 30 + "px";
-        heart.style.height = heart.style.width;
-        document.getElementById("fallingHearts").appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }
-      setInterval(createHeart, 200);
+      function revealTimeline() {
+        const events = document.querySelectorAll(".event");
+        const scrollY = window.scrollY + window.innerHeight;
 
-      function startLoading() {
-        let progressBar = document.getElementById("progressBar");
-        let transitionScreen = document.getElementById("transitionScreen");
-        let container = document.getElementById("container");
-
-        let progress = 0;
-        let interval = setInterval(() => {
-          progress += 1;
-          progressBar.style.width = progress + "%";
-
-          if (progress >= 100) {
-            clearInterval(interval);
-
-            // ซ่อน container อย่างสมูท
-            container.style.opacity = "0";
-
-            // รอให้ container หายไป แล้วเลื่อนแถบสีลงมา
-            setTimeout(() => {
-              transitionScreen.style.top = "0";
-
-              setTimeout(() => {
-                window.location.href = "one.html";
-              }, 1500);
-            }, 1000); // รอให้ fade-out เสร็จก่อน
+        events.forEach((event) => {
+          if (scrollY > event.offsetTop + 50) {
+            event.classList.add("show");
           }
-        }, 30);
+        });
       }
+
+      function showPopup(year, text) {
+        document.getElementById("popup-title").textContent = year;
+        document.getElementById("popup-text").textContent = text;
+        document.getElementById("popup").classList.add("show");
+      }
+
+      function closePopup() {
+        document.getElementById("popup").classList.remove("show");
+      }
+
+      document.addEventListener("scroll", revealTimeline);
+      revealTimeline();
     </script>
   </body>
 </html>
